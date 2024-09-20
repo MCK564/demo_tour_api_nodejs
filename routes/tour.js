@@ -34,3 +34,24 @@ router.get('/:id', (req, res )=>{
 
 
 
+router.get("/search/:name", (req,res)=>{
+    const tours = readToursFromFile();
+    const searchResults = tours.filter(t => t.name.toLowerCase().includes(req.params.name.toLowerCase()))
+    res.json(searchResults);
+})
+
+
+router.post('/', (req,res)=>{
+    const tours = readToursFromFile();
+    const newTour = {
+        id: tours.length +1,
+        name: req.body.name,
+        price: req.body.price
+    };
+
+    tours.push(newTour);
+    writeToursToFile(tours);
+    res.status(201).json(newTour);
+})
+
+module.exports = router;
